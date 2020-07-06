@@ -1,6 +1,7 @@
 package com.kimi.rubytutor;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,12 @@ public class BonusAdapter extends RecyclerView.Adapter<BonusAdapter.BaseViewHold
 
     private ArrayList<Bonus> bonusArrayList;
 
+    private BonusItemClick itemClick;
+
+    public void setItemClick(BonusItemClick itemClick) {
+        this.itemClick = itemClick;
+    }
+
     public BonusAdapter(ArrayList<Bonus> bonusArrayList) {
         this.bonusArrayList = bonusArrayList;
     }
@@ -29,7 +36,6 @@ public class BonusAdapter extends RecyclerView.Adapter<BonusAdapter.BaseViewHold
         View view;
 
         switch (viewType) {
-
             case 1:
                  view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bouns_manager, parent, false);
                 return new ManagerViewHolder(view);
@@ -84,7 +90,7 @@ public class BonusAdapter extends RecyclerView.Adapter<BonusAdapter.BaseViewHold
              tvDescription = itemView.findViewById(R.id.tv_description);
          }
 
-        void bindData(Bonus bonus) {
+        void bindData(final Bonus bonus) {
              tvName.setText(bonus.getName());
              tvDescription.setText(bonus.getDescription());
 
@@ -100,6 +106,20 @@ public class BonusAdapter extends RecyclerView.Adapter<BonusAdapter.BaseViewHold
                 default:
                     break;
             }
+
+           // itemClick.onClick();
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Log.d("kimi", "onClick: kimi");
+                    if (itemClick != null) {
+                        itemClick.onClick(bonus);
+                    }
+                }
+            });
+
+
         }
 
      }
@@ -121,4 +141,8 @@ public class BonusAdapter extends RecyclerView.Adapter<BonusAdapter.BaseViewHold
         }
 
     }
+}
+
+interface BonusItemClick {
+    void onClick(Bonus bonus);
 }

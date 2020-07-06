@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 Bonus bonus = new Bonus("Ruby ", "Manager", 1, IconType.Blue);
                 bonusArrayList.add(bonus);
             } else {
-                Bonus bonus = new Bonus("黑晶條件 ", "Test 5566", 0, IconType.Red);
+                Bonus bonus = new Bonus("黑晶條件 " + i, "Test 5566", 0, IconType.Red);
                 bonusArrayList.add(bonus);
             }
         }
@@ -34,8 +36,18 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        recyclerView.setAdapter(new BonusAdapter(bonusArrayList));
 
+        BonusAdapter adapter = new BonusAdapter(bonusArrayList);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setItemClick(new BonusItemClick() {
+            @Override
+            public void onClick(Bonus bonus) {
+                Log.d("Ruby", "onClick: " + bonus.getName());
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
